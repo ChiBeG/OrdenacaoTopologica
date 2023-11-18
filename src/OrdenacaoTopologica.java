@@ -1,4 +1,8 @@
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OrdenacaoTopologica
 {
@@ -67,9 +71,27 @@ public class OrdenacaoTopologica
 	}
 	
 	/* Método responsável pela leitura do arquivo de entrada. */
-	public void realizaLeitura(String nomeEntrada)
-	{
-		/* Preencher. */
+	public void realizaLeitura(String nomeEntrada) throws FileNotFoundException {
+		try{
+			File entrada = new File(nomeEntrada);
+			Scanner leitor = new Scanner(entrada);
+			Pattern padrao = Pattern.compile("(\\d+)\\s*<\\s*(\\d+)")	;
+			Matcher matcher;
+			int x, y;
+			while (leitor.hasNextLine()) {
+				String linha = leitor.nextLine();
+				matcher = padrao.matcher(linha);
+				System.out.println(linha);
+				if (matcher.find()){
+					x = Integer.parseInt(matcher.group(1));
+					y = Integer.parseInt(matcher.group(2));
+
+				}
+			}
+			leitor.close();
+		}catch (FileNotFoundException e){
+			System.out.println("Erro na leitura do arquivo de entrada!");
+		}
 	}
 	
 	/* Método para impressão do estado atual da estrutura de dados. */
