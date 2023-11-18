@@ -85,7 +85,7 @@ public class OrdenacaoTopologica
 				if (matcher.find()){
 					x = Integer.parseInt(matcher.group(1));
 					y = Integer.parseInt(matcher.group(2));
-
+					inserePar(x, y);
 				}
 			}
 			leitor.close();
@@ -93,18 +93,66 @@ public class OrdenacaoTopologica
 			System.out.println("Erro na leitura do arquivo de entrada!");
 		}
 	}
+
+	private Elo insere(int chave){
+		Elo novo = new Elo(chave, 0, null, null);
+		if (prim == null){
+			prim = novo;
+			n++;
+			return prim;
+		}
+		Elo aux = prim;
+		while ((aux.prox != null) && (aux.chave != chave)){
+			aux = aux.prox;
+		}
+		if (aux.chave == chave)
+			return aux;
+		aux.prox = novo;
+		n++;
+		return aux.prox;
+	}
+	private void inserePar(int chavePredecessor, int chaveSucessor){
+		Elo eloPredecessor = insere(chavePredecessor);
+		Elo eloSucessor = insere(chaveSucessor);
+		EloSuc eloListaSuc = new EloSuc();
+
+		eloListaSuc.id = eloSucessor;
+		if (eloPredecessor.listaSuc != null){
+			eloListaSuc.prox = eloPredecessor.listaSuc;
+		}
+		eloPredecessor.listaSuc = eloListaSuc;
+
+		eloSucessor.contador++;
+
+	}
 	
 	/* Método para impressão do estado atual da estrutura de dados. */
 	private void debug()
 	{
-		/* Preencher. */
+		System.out.println("Debug");
+		imprime(prim);
+
+	}
+	private void imprime(Elo p){
+		if(p == null)
+			return;
+		System.out.print("\n" + p.chave + " predecessores: " + p.contador + " sucessores: ");
+		imprimeSucessores(p.listaSuc);
+		imprime(p.prox);
+	}
+	private void imprimeSucessores(EloSuc q){
+		if (q == null){
+			System.out.print("NULL");
+			return;
+		}
+		System.out.print(q.id.chave + " -> ");
+		imprimeSucessores(q.prox);
 	}
 	
 	/* Método responsável por executar o algoritmo. */
 	public boolean executa()
 	{
-		/* Preencher. */
-		
+		debug();
 		return false;
 	}
 }

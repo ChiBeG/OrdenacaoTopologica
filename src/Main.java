@@ -10,8 +10,8 @@ public class Main
 		ord.realizaLeitura(nomeEntrada);
 
 		if(!ord.executa())
-			System.out.println("O conjunto não é parcialmente ordenado.");
+			System.out.println("\nO conjunto não é parcialmente ordenado.");
 		else
-			System.out.println("O conjunto é parcialmente ordenado.");
+			System.out.println("\nO conjunto é parcialmente ordenado.");
 	}
 }
