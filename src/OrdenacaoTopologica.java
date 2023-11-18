@@ -69,7 +69,7 @@ public class OrdenacaoTopologica
 	/* Método responsável pela leitura do arquivo de entrada. */
 	public void realizaLeitura(String nomeEntrada)
 	{
-		System.out.println("Teste");
+		/* Preencher. */
 	}
 	
 	/* Método para impressão do estado atual da estrutura de dados. */
