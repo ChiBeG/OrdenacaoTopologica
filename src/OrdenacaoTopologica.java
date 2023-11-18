@@ -1,4 +1,4 @@
-package br.unirio;
+
 
 public class OrdenacaoTopologica
 {
@@ -69,7 +69,7 @@ public class OrdenacaoTopologica
 	/* Método responsável pela leitura do arquivo de entrada. */
 	public void realizaLeitura(String nomeEntrada)
 	{
-		/* Preencher.asdasdas */
+		System.out.println("Teste");
 	}
 	
 	/* Método para impressão do estado atual da estrutura de dados. */
