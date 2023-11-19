@@ -75,13 +75,12 @@ public class OrdenacaoTopologica
 		try{
 			File entrada = new File(nomeEntrada);
 			Scanner leitor = new Scanner(entrada);
-			Pattern padrao = Pattern.compile("(\\d+)\\s*<\\s*(\\d+)")	;
+			Pattern padrao = Pattern.compile("(\\d+)\\s*<\\s*(\\d+)");
 			Matcher matcher;
 			int x, y;
 			while (leitor.hasNextLine()) {
 				String linha = leitor.nextLine();
 				matcher = padrao.matcher(linha);
-				System.out.println(linha);
 				if (matcher.find()){
 					x = Integer.parseInt(matcher.group(1));
 					y = Integer.parseInt(matcher.group(2));
@@ -129,9 +128,8 @@ public class OrdenacaoTopologica
 	/* Método para impressão do estado atual da estrutura de dados. */
 	private void debug()
 	{
-		System.out.println("Debug");
+		System.out.print("\nDebug");
 		imprime(prim);
-
 	}
 	private void imprime(Elo p){
 		if(p == null)
