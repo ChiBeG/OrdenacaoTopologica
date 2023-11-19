@@ -5,7 +5,7 @@ public class Main
 	public static void main(String[] args){
 		OrdenacaoTopologica ord = new OrdenacaoTopologica();
 
-		String nomeEntrada = "entada.txt";
+		String nomeEntrada = "entrada.txt";
 
 		try {
 			ord.realizaLeitura(nomeEntrada);
