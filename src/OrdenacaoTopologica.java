@@ -71,7 +71,7 @@ public class OrdenacaoTopologica
 	}
 	
 	/* Método responsável pela leitura do arquivo de entrada. */
-	public void realizaLeitura(String nomeEntrada) throws FileNotFoundException {
+	public void realizaLeitura(String nomeEntrada) throws FileNotFoundException{
 		try{
 			File entrada = new File(nomeEntrada);
 			Scanner leitor = new Scanner(entrada);
@@ -89,7 +89,7 @@ public class OrdenacaoTopologica
 			}
 			leitor.close();
 		}catch (FileNotFoundException e){
-			System.out.println("Erro na leitura do arquivo de entrada!");
+			throw new FileNotFoundException();
 		}
 	}
 
