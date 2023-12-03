@@ -161,6 +161,7 @@ public class OrdenacaoTopologica
 		q = prim;
 		EloSuc t;
 		Elo fimLista = prim;
+
 		while (fimLista.prox != null)
 			fimLista = fimLista.prox;
 
