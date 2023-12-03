@@ -162,6 +162,7 @@ public class OrdenacaoTopologica
 		EloSuc t;
 		Elo fimLista = prim;
 
+		assert fimLista != null;
 		while (fimLista.prox != null)
 			fimLista = fimLista.prox;
 
