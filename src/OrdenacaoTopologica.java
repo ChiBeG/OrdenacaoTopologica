@@ -71,26 +71,22 @@ public class OrdenacaoTopologica
 	}
 	
 	/* Método responsável pela leitura do arquivo de entrada. */
-	public void realizaLeitura(String nomeEntrada) throws FileNotFoundException{
-		try{
-			File entrada = new File(nomeEntrada);
-			Scanner leitor = new Scanner(entrada);
-			Pattern padrao = Pattern.compile("(\\d+)\\s*<\\s*(\\d+)");
-			Matcher matcher;
-			int x, y;
-			while (leitor.hasNextLine()) {
-				String linha = leitor.nextLine();
-				matcher = padrao.matcher(linha);
-				if (matcher.find()){
-					x = Integer.parseInt(matcher.group(1));
-					y = Integer.parseInt(matcher.group(2));
-					inserePar(x, y);
-				}
+	public void realizaLeitura(String nomeEntrada) throws FileNotFoundException {
+		File entrada = new File(nomeEntrada);
+		Scanner leitor = new Scanner(entrada);
+		Pattern padrao = Pattern.compile("(\\d+)\\s*<\\s*(\\d+)");
+		Matcher matcher;
+		int x, y;
+		while (leitor.hasNextLine()) {
+			String linha = leitor.nextLine();
+			matcher = padrao.matcher(linha);
+			if (matcher.find()){
+				x = Integer.parseInt(matcher.group(1));
+				y = Integer.parseInt(matcher.group(2));
+				inserePar(x, y);
 			}
-			leitor.close();
-		}catch (FileNotFoundException e){
-			throw new FileNotFoundException();
 		}
+			leitor.close();
 	}
 
 	private Elo insere(int chave){
@@ -128,7 +124,6 @@ public class OrdenacaoTopologica
 	/* Método para impressão do estado atual da estrutura de dados. */
 	private void debug()
 	{
-		System.out.print("\nDebug");
 		imprime(prim);
 	}
 	private void imprime(Elo p){
@@ -139,6 +134,7 @@ public class OrdenacaoTopologica
 		imprime(p.prox);
 	}
 	private void imprimeSucessores(EloSuc q){
+
 		if (q == null){
 			System.out.print("NULL");
 			return;
@@ -146,11 +142,61 @@ public class OrdenacaoTopologica
 		System.out.print(q.id.chave + " -> ");
 		imprimeSucessores(q.prox);
 	}
-	
-	/* Método responsável por executar o algoritmo. */
+	private void ordena(){
+
+		Elo p = prim;
+		prim = null;
+		Elo q;
+
+		while (p != null){
+			q = p;
+			p = q.prox;
+			if (q.contador == 0){
+				q.prox = prim;
+				prim = q;
+			}
+		}
+
+
+		q = prim;
+		EloSuc t;
+		Elo fimLista = prim;
+		while (fimLista.prox != null)
+			fimLista = fimLista.prox;
+
+
+		while (q != null){
+			System.out.print(q.chave + " ");
+			n--;
+			t = q.listaSuc;
+			while (t != null){
+				t.id.contador--;
+				if (t.id.contador == 0){
+					t.id.prox = null;
+					fimLista.prox = t.id;
+					fimLista = fimLista.prox;
+				}
+				q.listaSuc = q.listaSuc.prox;
+				t = q.listaSuc;
+			}
+			prim = q.prox;
+			q = prim;
+		}
+	}
+
+	/* Método responsável por executar o algotritmo. */
 	public boolean executa()
 	{
 		debug();
-		return false;
+		System.out.println("\n\nOrdenação Topológica:\n");
+		ordena();
+		return (n == 0);
 	}
+
+	//Você deve então usar esse método desenvolvido para gerar
+	//grafos artificiais com os seguintes números de vértices V: 10, 20, 30, 40, 50, 100, 200,
+	//500, 1.000, 5.000, 10.000, 20.000, 30.000, 50.000 e 100.000.
+
+
+
 }
