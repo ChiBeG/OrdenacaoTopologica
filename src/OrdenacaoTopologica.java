@@ -214,16 +214,15 @@ public class OrdenacaoTopologica
 	}
 
 
-	public void geraGrafo(int quantidadeVertices){
-		System.out.println("Realizando geração do grafo de " + quantidadeVertices + " nós...");
+	public void geraGrafo(int quantidadeVertices, int quantidadeArestas){
+		System.out.println("Realizando geração do grafo de " + quantidadeVertices + " vértices e " + quantidadeArestas + " arestas...");
 		prim = null;
 
 		for (int i = 1; i <= quantidadeVertices; i++)
 			insere(i);
 
 		Random random = new Random();
-		int maxArestas = (quantidadeVertices * (quantidadeVertices - 1))/2;
-		int quantidadeTotalArestas = random.nextInt(quantidadeVertices, maxArestas);
+
 
 		double probabilidadeArestas = 0.03;
 		double probabilidadeAleatoria;
@@ -231,7 +230,6 @@ public class OrdenacaoTopologica
 		Elo origem, destino;
 		int numeroAtualArestas = 0;
 
-		System.out.println("Quantidade sorteada de arestas: " + quantidadeTotalArestas);
 		do{
 			for (origem = prim; origem != null; origem = origem.prox){
 				for (destino = prim; destino != null; destino = destino.prox){
@@ -251,7 +249,7 @@ public class OrdenacaoTopologica
 					}
 				}
 			}
-		}while (numeroAtualArestas < quantidadeTotalArestas);
+		}while (numeroAtualArestas < quantidadeArestas);
 	}
 
 
