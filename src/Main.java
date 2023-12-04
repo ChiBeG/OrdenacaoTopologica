@@ -18,15 +18,14 @@ public class Main
 			System.out.println("Erro na leitura do arquivo: " + e.getMessage());
 		}
 
+		ord.medirTempo(1000);
 
-		ord.geraGrafo(300);
+		/*
+		ord.geraGrafo(1000);
 		if (!ord.executa())
 			System.out.println("\nO conjunto não é parcialmente ordenado");
 		else
 			System.out.println("\nO conjunto é parcialmente ordenado.");
-
-
-
-
+	    */
 	}
 }
