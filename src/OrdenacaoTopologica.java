@@ -121,6 +121,7 @@ public class OrdenacaoTopologica
 		eloSucessor.contador++;
 
 	}
+
 	
 	/* Método para impressão do estado atual da estrutura de dados. */
 	private void debug()
@@ -212,37 +213,40 @@ public class OrdenacaoTopologica
 		return (n == 0);
 	}
 
-	//Você deve então usar esse método desenvolvido para gerar
-	//grafos artificiais com os seguintes números de vértices V: 10, 20, 30, 40, 50, 100, 200,
-	//500, 1.000, 5.000, 10.000, 20.000, 30.000, 50.000 e 100.000.
 
 	public void geraGrafo(int quantidadeVertices){
 		System.out.println("Realizando geração do grafo de " + quantidadeVertices + " nós...");
 		prim = null;
 
-		for (int i = 1; i <= quantidadeVertices; i++){ // Insere os vértices - O(n)
+		for (int i = 1; i <= quantidadeVertices; i++)
 			insere(i);
-		}
 
 		Random random = new Random();
-		int maxArestas = quantidadeVertices * 2;//(quantidadeVertices * (quantidadeVertices - 1))/2;
+		int maxArestas = (quantidadeVertices * (quantidadeVertices - 1))/2;
 		int quantidadeTotalArestas = random.nextInt(quantidadeVertices, maxArestas);
 
-		double probabilidadeArestas = 0.2;
+		double probabilidadeArestas = 0.03;
 		double probabilidadeAleatoria;
 
-		int origem, destino;
+		Elo origem, destino;
 		int numeroAtualArestas = 0;
 
 		System.out.println("Quantidade sorteada de arestas: " + quantidadeTotalArestas);
 		do{
-			for (origem = 1; origem <= quantidadeVertices; origem++){
-				for (destino = 1; destino <= quantidadeVertices; destino++){
+			for (origem = prim; origem != null; origem = origem.prox){
+				for (destino = prim; destino != null; destino = destino.prox){
 					if (origem != destino){
-						probabilidadeAleatoria = random.nextDouble();
+						probabilidadeAleatoria = random.nextDouble(0, 1);
 						if (probabilidadeAleatoria <= probabilidadeArestas){
-							inserePar(origem, destino);
-							numeroAtualArestas++;
+							if(NaoExisteAresta(origem, destino) && NaoExisteAresta(destino, origem)) {
+								inserePar(origem.chave, destino.chave);
+								if (detectaCiclo(destino)) {
+									origem.listaSuc = origem.listaSuc.prox;
+									destino.contador--;
+								}
+								else
+									numeroAtualArestas++;
+							}
 						}
 					}
 				}
@@ -250,7 +254,39 @@ public class OrdenacaoTopologica
 		}while (numeroAtualArestas < quantidadeTotalArestas);
 	}
 
-	private boolean detectaCiclo(){
+
+	private boolean NaoExisteAresta(Elo origem, Elo destino){
+		EloSuc sucessor = origem.listaSuc;
+		while (sucessor != null){
+			if (sucessor.id.equals(destino))
+				return false;
+			sucessor = sucessor.prox;
+		}
+		return true;
+	}
+
+	private boolean detectaCiclo(Elo origem){
+		boolean[] visitado = new boolean[n];
+		boolean[] recursao = new boolean[n];
+		return detectaCiclo(origem, visitado, recursao);
+	}
+	private boolean detectaCiclo(Elo n, boolean[] visitado, boolean[] recursao){
+		if (!visitado[n.chave-1]){
+			visitado[n.chave-1] = true;
+			recursao[n.chave-1] = true;
+
+			EloSuc sucessor = n.listaSuc;
+			while(sucessor != null){
+				if (!visitado[sucessor.id.chave-1] && detectaCiclo(sucessor.id, visitado, recursao)){
+					return true;
+				}
+				else if (recursao[sucessor.id.chave-1]){
+					return true;
+				}
+				sucessor = sucessor.prox;
+			}
+		}
+		recursao[n.chave-1] = false;
 		return false;
 	}
 

@@ -19,7 +19,7 @@ public class Main
 		}
 
 
-		ord.geraGrafo(300);
+		ord.geraGrafo(100);
 		if (!ord.executa())
 			System.out.println("\nO conjunto não é parcialmente ordenado");
 		else
