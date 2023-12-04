@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -124,24 +125,40 @@ public class OrdenacaoTopologica
 	/* Método para impressão do estado atual da estrutura de dados. */
 	private void debug()
 	{
-		imprime(prim);
+		System.out.println("Debug:\n");
+		Elo p = prim;
+		EloSuc q;
+		while (p != null){
+			System.out.print("\n" + p.chave + " predecessores: " + p.contador + " sucessores: ");
+			q = p.listaSuc;
+			while (q != null){
+				System.out.print(q.id.chave + " -> ");
+				q = q.prox;
+			}
+			System.out.print("NULL");
+			p = p.prox;
+
+		}
 	}
-	private void imprime(Elo p){
+
+	// Métodos recursivos de impressão descartados:
+	private void imprimeRecursivo(Elo p){
 		if(p == null)
 			return;
 		System.out.print("\n" + p.chave + " predecessores: " + p.contador + " sucessores: ");
-		imprimeSucessores(p.listaSuc);
-		imprime(p.prox);
+		imprimeSucessoresRecursivo(p.listaSuc);
+		imprimeRecursivo(p.prox);
 	}
-	private void imprimeSucessores(EloSuc q){
+	private void imprimeSucessoresRecursivo(EloSuc q){
 
 		if (q == null){
 			System.out.print("NULL");
 			return;
 		}
 		System.out.print(q.id.chave + " -> ");
-		imprimeSucessores(q.prox);
+		imprimeSucessoresRecursivo(q.prox);
 	}
+
 	private void ordena(){
 
 		Elo p = prim;
@@ -199,6 +216,36 @@ public class OrdenacaoTopologica
 	//grafos artificiais com os seguintes números de vértices V: 10, 20, 30, 40, 50, 100, 200,
 	//500, 1.000, 5.000, 10.000, 20.000, 30.000, 50.000 e 100.000.
 
+	public void geraGrafo(int quantidadeVertices){
+		System.out.println("Realizando geração do grafo de " + quantidadeVertices + " nós...");
+		prim = null;
 
+		for (int i = 1; i <= quantidadeVertices; i++){ // Insere os vértices - O(n)
+			insere(i);
+		}
+
+		Random random = new Random();
+		int maxArestas = quantidadeVertices * (quantidadeVertices - 1)/2;
+		int quantidadeArestas;
+
+		double probabilidadeArestas = 0.3;
+		double probabilidadeAleatoria;
+
+		int origem, destino;
+		for (origem = 1; origem <= quantidadeVertices; origem++){
+			for (destino = 1; destino <= quantidadeVertices; destino++){
+				if (origem != destino){
+					probabilidadeAleatoria = random.nextDouble(0, 1);
+					if (probabilidadeAleatoria <= probabilidadeArestas){
+						inserePar(origem, destino);
+					}
+				}
+			}
+		}
+	}
+
+	private boolean detectaCiclo(){
+		return false;
+	}
 
 }

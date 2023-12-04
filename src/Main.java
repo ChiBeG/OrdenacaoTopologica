@@ -19,6 +19,13 @@ public class Main
 		}
 
 
+		ord.geraGrafo(100000);
+		if (!ord.executa())
+			System.out.println("\nO conjunto não é parcialmente ordenado");
+		else
+			System.out.println("\nO conjunto é parcialmente ordenado.");
+
+
 
 
 	}
