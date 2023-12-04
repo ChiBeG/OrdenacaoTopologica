@@ -185,6 +185,7 @@ public class OrdenacaoTopologica
 			fimLista = fimLista.prox;
 
 
+
 		while (q != null){
 			System.out.print(q.chave + " ");
 			n--;
@@ -288,5 +289,23 @@ public class OrdenacaoTopologica
 		}
 		recursao[n.chave-1] = false;
 		return false;
+	}
+
+	public long medirTempo(int quantidadeVertices) {
+		long t0, t1;
+		long totalProcessamento = 0;
+		long processamentoIndividual;
+
+		for(int i = 0; i < 10; i++) {
+			t0 = System.currentTimeMillis();
+			geraGrafo(quantidadeVertices);
+			executa();
+			t1 = System.currentTimeMillis();
+
+			processamentoIndividual = t1 - t0;
+			totalProcessamento += processamentoIndividual;
+		}
+
+		return totalProcessamento / 10;
 	}
 }
