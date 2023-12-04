@@ -125,17 +125,17 @@ public class OrdenacaoTopologica
 	/* Método para impressão do estado atual da estrutura de dados. */
 	private void debug()
 	{
-		System.out.println("Debug:\n");
+		System.out.println("Debug:");
 		Elo p = prim;
 		EloSuc q;
 		while (p != null){
-			System.out.print("\n" + p.chave + " predecessores: " + p.contador + " sucessores: ");
+			System.out.print(p.chave + " predecessores: " + p.contador + " sucessores: ");
 			q = p.listaSuc;
 			while (q != null){
 				System.out.print(q.id.chave + " -> ");
 				q = q.prox;
 			}
-			System.out.print("NULL");
+			System.out.print("NULL\n");
 			p = p.prox;
 
 		}
@@ -207,7 +207,7 @@ public class OrdenacaoTopologica
 	public boolean executa()
 	{
 		debug();
-		System.out.println("\n\nOrdenação Topológica:\n");
+		System.out.println("\nOrdenação Topológica:");
 		ordena();
 		return (n == 0);
 	}
@@ -225,23 +225,29 @@ public class OrdenacaoTopologica
 		}
 
 		Random random = new Random();
-		int maxArestas = quantidadeVertices * (quantidadeVertices - 1)/2;
-		int quantidadeArestas;
+		int maxArestas = quantidadeVertices * 2;//(quantidadeVertices * (quantidadeVertices - 1))/2;
+		int quantidadeTotalArestas = random.nextInt(quantidadeVertices, maxArestas);
 
-		double probabilidadeArestas = 0.3;
+		double probabilidadeArestas = 0.2;
 		double probabilidadeAleatoria;
 
 		int origem, destino;
-		for (origem = 1; origem <= quantidadeVertices; origem++){
-			for (destino = 1; destino <= quantidadeVertices; destino++){
-				if (origem != destino){
-					probabilidadeAleatoria = random.nextDouble(0, 1);
-					if (probabilidadeAleatoria <= probabilidadeArestas){
-						inserePar(origem, destino);
+		int numeroAtualArestas = 0;
+
+		System.out.println("Quantidade sorteada de arestas: " + quantidadeTotalArestas);
+		do{
+			for (origem = 1; origem <= quantidadeVertices; origem++){
+				for (destino = 1; destino <= quantidadeVertices; destino++){
+					if (origem != destino){
+						probabilidadeAleatoria = random.nextDouble();
+						if (probabilidadeAleatoria <= probabilidadeArestas){
+							inserePar(origem, destino);
+							numeroAtualArestas++;
+						}
 					}
 				}
 			}
-		}
+		}while (numeroAtualArestas < quantidadeTotalArestas);
 	}
 
 	private boolean detectaCiclo(){
