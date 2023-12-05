@@ -78,13 +78,16 @@ public class OrdenacaoTopologica
 		Pattern padrao = Pattern.compile("(\\d+)\\s*<\\s*(\\d+)");
 		Matcher matcher;
 		int x, y;
+		Elo eloX, eloY;
 		while (leitor.hasNextLine()) {
 			String linha = leitor.nextLine();
 			matcher = padrao.matcher(linha);
 			if (matcher.find()){
 				x = Integer.parseInt(matcher.group(1));
 				y = Integer.parseInt(matcher.group(2));
-				inserePar(x, y);
+				eloX = insere(x);
+				eloY = insere(y);
+				insereAresta(eloX, eloY);
 			}
 		}
 			leitor.close();
@@ -107,19 +110,18 @@ public class OrdenacaoTopologica
 		n++;
 		return aux.prox;
 	}
-	private void inserePar(int chavePredecessor, int chaveSucessor){
-		Elo eloPredecessor = insere(chavePredecessor);
-		Elo eloSucessor = insere(chaveSucessor);
+
+
+	private void insereAresta(Elo predecessor, Elo sucessor){
 		EloSuc eloListaSuc = new EloSuc();
 
-		eloListaSuc.id = eloSucessor;
-		if (eloPredecessor.listaSuc != null){
-			eloListaSuc.prox = eloPredecessor.listaSuc;
+		eloListaSuc.id = sucessor;
+		if (predecessor.listaSuc != null){
+			eloListaSuc.prox = predecessor.listaSuc;
 		}
-		eloPredecessor.listaSuc = eloListaSuc;
+		predecessor.listaSuc = eloListaSuc;
 
-		eloSucessor.contador++;
-
+		sucessor.contador++;
 	}
 
 	
@@ -140,24 +142,6 @@ public class OrdenacaoTopologica
 			p = p.prox;
 
 		}
-	}
-
-	// Métodos recursivos de impressão descartados:
-	private void imprimeRecursivo(Elo p){
-		if(p == null)
-			return;
-		System.out.print("\n" + p.chave + " predecessores: " + p.contador + " sucessores: ");
-		imprimeSucessoresRecursivo(p.listaSuc);
-		imprimeRecursivo(p.prox);
-	}
-	private void imprimeSucessoresRecursivo(EloSuc q){
-
-		if (q == null){
-			System.out.print("NULL");
-			return;
-		}
-		System.out.print(q.id.chave + " -> ");
-		imprimeSucessoresRecursivo(q.prox);
 	}
 
 	private void ordena(){
@@ -215,7 +199,7 @@ public class OrdenacaoTopologica
 	}
 
 
-	public void geraGrafo(int quantidadeVertices, int quantidadeArestas){
+	public void geraGrafo(int quantidadeVertices, long quantidadeArestas){
 		System.out.println("Realizando geração do grafo de " + quantidadeVertices + " vértices e " + quantidadeArestas + " arestas...");
 		prim = null;
 
@@ -229,22 +213,44 @@ public class OrdenacaoTopologica
 		double probabilidadeAleatoria;
 
 		Elo origem, destino;
-		int numeroAtualArestas = 0;
+		int chaveOrigem, chaveDestino;
+		long numeroAtualArestas = 0;
 
 		do{
+//			// Algoritmo 1:
+//			chaveOrigem = random.nextInt(1, quantidadeVertices+1);
+//			chaveDestino = random.nextInt(1, quantidadeVertices+1);
+//			//System.out.printf(chaveOrigem + " < " + chaveDestino);
+//			if (chaveOrigem != chaveDestino){
+//				origem = insere(chaveOrigem);
+//				destino = insere(chaveDestino);
+//				if (!existeAresta(origem, destino)){
+//					insereAresta(origem, destino);
+//					if (detectaCiclo(destino)){
+//						origem.listaSuc = origem.listaSuc.prox;
+//						destino.contador--;
+//					}
+//					else{
+//						numeroAtualArestas++;
+//					}
+//				}
+//			}
+			// Algoritmo 2:
 			for (origem = prim; origem != null; origem = origem.prox){
 				for (destino = prim; destino != null; destino = destino.prox){
 					if (origem != destino){
 						probabilidadeAleatoria = random.nextDouble(0, 1);
 						if (probabilidadeAleatoria <= probabilidadeArestas){
-							if(NaoExisteAresta(origem, destino) && NaoExisteAresta(destino, origem)) {
-								inserePar(origem.chave, destino.chave);
+							if (!existeAresta(origem, destino)){
+								insereAresta(origem, destino);
 								if (detectaCiclo(destino)) {
 									origem.listaSuc = origem.listaSuc.prox;
 									destino.contador--;
 								}
-								else
+								else {
 									numeroAtualArestas++;
+									//System.out.print(origem.chave + " < " + destino.chave + " ");
+								}
 							}
 						}
 					}
@@ -253,15 +259,14 @@ public class OrdenacaoTopologica
 		}while (numeroAtualArestas < quantidadeArestas);
 	}
 
-
-	private boolean NaoExisteAresta(Elo origem, Elo destino){
+	private boolean existeAresta(Elo origem, Elo destino){
 		EloSuc sucessor = origem.listaSuc;
 		while (sucessor != null){
 			if (sucessor.id.equals(destino))
-				return false;
+				return true;
 			sucessor = sucessor.prox;
 		}
-		return true;
+		return false;
 	}
 
 	private boolean detectaCiclo(Elo origem){
