@@ -23,19 +23,22 @@ public class Main
 
 
 		int [] tamanhos = {10, 20, 30, 40, 50, 100, 200, 500 , 1000, 5000, 10000, 20000, 30000, 50000, 100000};
-		long [] tamanhoArestas = {20, 100, 300, 400, 700, 2000, 4000, 10000, 50000, 250000, 500000, 1000000, 1500000, 5000000, 10000000};
+		double [] probabilidades = {0.03, 0.03, 0.03, 0.03, 0.03, 0.2, 0.2, 0.2, 0.3, 0.6, 0.7, 0.8, 0.85, 0.9, 0.97};
 		Random random = new Random();
 		int quantidadeVertices;
-		long quantidadeArestas, tempoInicial, tempoFinal, tempoTotal;
+		long quantidadeArestas, maxArestas, tempoInicial, tempoFinal, tempoTotal;
+		double probabilidadeArestas;
 		PrintWriter log = new PrintWriter("log.txt");
 
 		for (int i = 0; i < tamanhos.length; i++){
 			quantidadeVertices = tamanhos[i];
-			quantidadeArestas = tamanhoArestas[i];
+			probabilidadeArestas = probabilidades[i];
+			maxArestas = ((long)quantidadeVertices * ((long)quantidadeVertices-1))/2;
+			quantidadeArestas = random.nextLong(1, maxArestas);
 			log.println("Grafo de " + quantidadeVertices + " e " + quantidadeArestas + " vertices - tempos (nano): ");
 			tempoTotal = 0;
 			for (int j = 0; j < 10; j++){
-				ord.geraGrafo(quantidadeVertices, quantidadeArestas);
+				ord.geraGrafo(quantidadeVertices, quantidadeArestas, probabilidadeArestas);
 				tempoInicial = System.nanoTime();
 				if (!ord.executa())
 					System.out.println("\nO conjunto não é parcialmente ordenado");

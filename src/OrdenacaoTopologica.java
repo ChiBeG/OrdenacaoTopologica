@@ -199,7 +199,7 @@ public class OrdenacaoTopologica
 	}
 
 
-	public void geraGrafo(int quantidadeVertices, long quantidadeArestas){
+	public void geraGrafo(int quantidadeVertices, long quantidadeArestas, double probabilidadeArestas){
 		System.out.println("Realizando geração do grafo de " + quantidadeVertices + " vértices e " + quantidadeArestas + " arestas...");
 		prim = null;
 
@@ -209,7 +209,6 @@ public class OrdenacaoTopologica
 		Random random = new Random();
 
 
-		double probabilidadeArestas = 0.03;
 		double probabilidadeAleatoria;
 
 		Elo origem, destino;
