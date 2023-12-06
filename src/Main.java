@@ -34,8 +34,9 @@ public class Main
 			quantidadeVertices = tamanhos[i];
 			probabilidadeArestas = probabilidades[i];
 			maxArestas = ((long)quantidadeVertices * ((long)quantidadeVertices-1))/2;
-			quantidadeArestas = random.nextLong(1, maxArestas);
-			log.println("Grafo de " + quantidadeVertices + " e " + quantidadeArestas + " vertices - tempos (nano): ");
+			quantidadeArestas = random.nextLong(quantidadeVertices, maxArestas);
+			log.println("10 grafos de " + quantidadeVertices + " vertices e " + quantidadeArestas + " arestas - tempo total (nano): ");
+			log.flush();
 			tempoTotal = 0;
 			for (int j = 0; j < 10; j++){
 				ord.geraGrafo(quantidadeVertices, quantidadeArestas, probabilidadeArestas);
@@ -48,6 +49,7 @@ public class Main
 				tempoTotal += tempoFinal - tempoInicial;
 			}
 			log.println(tempoTotal);
+			log.flush();
 
 		}
 		log.close();
