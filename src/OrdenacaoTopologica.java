@@ -124,6 +124,7 @@ public class OrdenacaoTopologica
 		sucessor.contador++;
 	}
 
+
 	
 	/* Método para impressão do estado atual da estrutura de dados. */
 	private void debug()
@@ -144,8 +145,9 @@ public class OrdenacaoTopologica
 		}
 	}
 
-	private void ordena(){
+	public void ordena(){
 
+		System.out.println("\nOrdenação Topológica:\n");
 		Elo p = prim;
 		prim = null;
 		Elo q;
@@ -193,14 +195,13 @@ public class OrdenacaoTopologica
 	public boolean executa()
 	{
 		debug();
-		System.out.println("\nOrdenação Topológica:");
 		ordena();
 		return (n == 0);
 	}
 
 
 	public void geraGrafo(int quantidadeVertices, long quantidadeArestas, double probabilidadeArestas){
-		System.out.println("Realizando geração do grafo de " + quantidadeVertices + " vértices e " + quantidadeArestas + " arestas...");
+		System.out.println("\nRealizando geração do grafo de " + quantidadeVertices + " vértices e " + quantidadeArestas + " arestas...");
 		prim = null;
 
 		for (int i = 1; i <= quantidadeVertices; i++)
@@ -291,6 +292,23 @@ public class OrdenacaoTopologica
 		}
 		recursao[n.chave-1] = false;
 		return false;
+	}
+
+	public void clonaGrafo(OrdenacaoTopologica original){
+		Elo n = original.prim;
+		EloSuc t;
+		Elo predecessor, sucessor;
+		while (n != null){
+			predecessor = this.insere(n.chave);
+			t = n.listaSuc;
+			while (t != null){
+				sucessor = this.insere(t.id.chave);
+				insereAresta(predecessor, sucessor);
+				t = t.prox;
+			}
+			n = n.prox;
+		}
+
 	}
 
 }
