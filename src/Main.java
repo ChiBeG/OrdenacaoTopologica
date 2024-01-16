@@ -22,8 +22,8 @@ public class Main
 		}
 
 
-		int [] tamanhos = {/*10, 20, 30, 40, 50, 100, 200, 500 , 1000, 5000, 10000, */20000, 30000, 50000, 100000};
-		double [] probabilidades = {/*0.03, 0.03, 0.03, 0.03, 0.03, 0.2, 0.2, 0.2, 0.3, 0.6, */0.7, 0.75, 0.8, 0.9, 0.97};
+		int [] tamanhos = {10, 20, 30, 40, 50, 100, 200, 500 , 1000, 5000, 10000, 20000, 30000, 50000, 100000};
+		double [] probabilidades = {0.03, 0.03, 0.03, 0.03, 0.03, 0.2, 0.2, 0.2, 0.3, 0.6, 0.7, 0.75, 0.8, 0.9, 0.97};
 		Random random = new Random();
 		int quantidadeVertices;
 		long quantidadeArestas, maxArestas, tempoInicial, tempoFinal, tempoTotal;
